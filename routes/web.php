@@ -10,3 +10,7 @@ Route::get('/', function (): Response {
         'laravelVersion' => app()->version(),
     ]);
 });
+
+Route::get('/editor', function (): Response {
+    return Inertia::render('Editor');
+})->name('editor');

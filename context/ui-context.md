@@ -35,7 +35,7 @@ Tailwind utility names map to these variables. Use `bg-base`, `bg-surface`, `tex
 | UI text   | Geist Sans | `--font-geist-sans` |
 | Code/mono | Geist Mono | `--font-geist-mono` |
 
-Both fonts are loaded via `next/font/google` and applied as CSS variables on the `<html>` element. The base `body` uses Geist Sans with `antialiased`.
+Laravel's Vite font integration loads both Google Fonts and exposes their CSS variables through the root Blade layout. The base `body` uses Geist Sans with `antialiased`.
 
 ## Border Radius
 
