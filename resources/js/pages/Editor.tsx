@@ -2,8 +2,9 @@ import { Head } from '@inertiajs/react';
 import { useId, useRef, useState } from 'react';
 import { EditorNavbar } from '@/components/editor/editor-navbar';
 import { ProjectSidebar } from '@/components/editor/project-sidebar';
+import type { AuthenticatedPageProps } from '@/types/auth';
 
-export default function Editor() {
+export default function Editor({ auth }: AuthenticatedPageProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const sidebarId = useId();
     const toggleButtonRef = useRef<HTMLButtonElement>(null);
@@ -17,6 +18,7 @@ export default function Editor() {
         <div className="flex h-dvh flex-col bg-base text-copy-primary">
             <Head title="Editor" />
             <EditorNavbar
+                accountName={auth.user.name}
                 isSidebarOpen={isSidebarOpen}
                 sidebarId={sidebarId}
                 onToggleSidebar={() => setIsSidebarOpen((isOpen) => !isOpen)}
