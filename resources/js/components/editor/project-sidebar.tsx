@@ -1,5 +1,6 @@
-import { Plus, X } from 'lucide-react';
+import { Pencil, Plus, Trash2, X } from 'lucide-react';
 import { useId } from 'react';
+import type { EditorProject, ProjectDialogAction } from '@/components/editor/use-project-dialogs';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
@@ -8,10 +9,11 @@ interface ProjectSidebarProps {
     id: string;
     isOpen: boolean;
     onClose: () => void;
-    onNewProject?: () => void;
+    projects: EditorProject[];
+    onOpenDialog: (action: ProjectDialogAction, button: HTMLButtonElement) => void;
 }
 
-export function ProjectSidebar({ id, isOpen, onClose, onNewProject }: ProjectSidebarProps) {
+export function ProjectSidebar({ id, isOpen, onClose, projects, onOpenDialog }: ProjectSidebarProps) {
     const titleId = useId();
 
     return (
@@ -42,19 +44,40 @@ export function ProjectSidebar({ id, isOpen, onClose, onNewProject }: ProjectSid
                     <TabsTrigger value="mine">My Projects</TabsTrigger>
                     <TabsTrigger value="shared">Shared</TabsTrigger>
                 </TabsList>
-                <TabsContent value="mine">
-                    <p className="rounded-xl border border-dashed border-surface-border px-3 py-6 text-center text-sm text-copy-muted">
-                        No projects yet.
-                    </p>
-                </TabsContent>
-                <TabsContent value="shared">
-                    <p className="rounded-xl border border-dashed border-surface-border px-3 py-6 text-center text-sm text-copy-muted">
-                        No projects have been shared with you.
-                    </p>
-                </TabsContent>
+                {(['mine', 'shared'] as const).map((tab) => {
+                    const role = tab === 'mine' ? 'owner' : 'collaborator';
+                    const items = projects.filter((project) => project.role === role);
+                    return (
+                        <TabsContent key={tab} value={tab}>
+                            {items.length ? (
+                                <ul className="grid gap-1">
+                                    {items.map((project) => (
+                                        <li key={project.id} className="flex min-h-10 items-center gap-1 rounded-xl bg-elevated px-2">
+                                            <span className="min-w-0 flex-1 truncate px-1 text-sm" title={project.name}>{project.name}</span>
+                                            {project.role === 'owner' && <>
+                                                <Button type="button" size="icon-sm" variant="ghost" aria-label={`Rename ${project.name}`}
+                                                    onClick={(event) => onOpenDialog({ type: 'rename', project }, event.currentTarget)}>
+                                                    <Pencil aria-hidden="true" />
+                                                </Button>
+                                                <Button type="button" size="icon-sm" variant="ghost" aria-label={`Delete ${project.name}`}
+                                                    onClick={(event) => onOpenDialog({ type: 'delete', project }, event.currentTarget)}>
+                                                    <Trash2 aria-hidden="true" />
+                                                </Button>
+                                            </>}
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p className="rounded-xl border border-dashed border-surface-border px-3 py-6 text-center text-sm text-copy-muted">
+                                    {tab === 'mine' ? 'No projects yet.' : 'No projects have been shared with you.'}
+                                </p>
+                            )}
+                        </TabsContent>
+                    );
+                })}
             </Tabs>
 
-            <Button type="button" className="w-full" onClick={onNewProject} disabled={!onNewProject}>
+            <Button type="button" className="w-full" onClick={(event) => onOpenDialog({ type: 'create' }, event.currentTarget)}>
                 <Plus className="size-5" aria-hidden="true" />
                 New Project
             </Button>

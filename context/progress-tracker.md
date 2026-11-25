@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Workspace authentication and account settings
+- Editor home and project management UI
 
 ## Current Goal
 
-- The editor now requires a signed-in account. Project data and creation are next once specified.
+- Signed-in users can create, rename, and delete mock projects in the editor. Changes last until the editor page is reloaded or unmounted.
 
 ## Completed
 
@@ -22,6 +22,9 @@ Update this file whenever the current phase, active feature, or implementation s
 
 - Added Google and GitHub sign-in and registration through Socialite. Members can connect a matching provider account from profile settings. Linked accounts continue to work after an email change.
 - Added profile success and error toasts and a hand cursor for clickable buttons. Profile settings saves email changes directly.
+- Added the Feature 04 editor home and Create Project dialog. Both New Project buttons open the same form with a live slug preview.
+- Added owner-only rename and delete actions to the Projects sidebar. Rename starts with the current name and supports Enter. Delete requires confirmation. On mobile, tapping the backdrop dismisses the sidebar.
+- The Create Project and Rename Project name fields use the theme's light primary text for entered and autofilled values.
 
 ## In Progress
 
@@ -29,11 +32,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Next Up
 
-- Connect project data and the New Project action when those features are specified.
+- Connect the project UI to persisted project data and Laravel ownership policies when the backend feature is specified.
 
 ## Open Questions
 
-- None for feature 03.
+- None for feature 04.
 
 ## Architecture Decisions
 
@@ -49,3 +52,4 @@ Update this file whenever the current phase, active feature, or implementation s
 - The account updates passed the full PHPUnit suite (31 tests, 358 assertions), TypeScript, and the production build. Both configured OAuth redirects included state and the expected callback. Socialite fakes exercised provider callbacks and account linking.
 - Chrome verified social buttons on both guest pages, the hand cursor, profile success and error toasts, the resend countdown, and an email change using a code captured from an isolated test mail transport. The two new tables were migrated on local PostgreSQL.
 - Removed the email-change dialog, verification endpoints, and notification. The previously applied database migration remains in the migration history.
+- Feature 04 passed strict TypeScript checking, the production build, standalone Oxlint on the changed frontend files, and the authenticated editor route test (17 assertions). Chrome verified both create entry points, live slug updates, keyboard rename, delete confirmation and cancellation, shared rows without actions, mobile backdrop dismissal, and mock data reset on reload.
