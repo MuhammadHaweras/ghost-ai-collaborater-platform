@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "30d84036255a7c8d7cb7e260349bd279",
+    "content-hash": "38cb2b60c3baa62522922d6698648c87",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3619,6 +3619,38 @@
                 "source": "https://github.com/marc-mabe/php-enum/tree/v4.7.2"
             },
             "time": "2025-09-14T11:18:39+00:00"
+        },
+        {
+            "name": "modules/projects",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "app-modules/projects",
+                "reference": "3acf351c6f7a7b22bb7e5691ffdfb184d30ec8cf"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Modules\\Projects\\Providers\\ProjectsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\Projects\\": "src/",
+                    "Modules\\Projects\\Tests\\": "tests/",
+                    "Modules\\Projects\\Database\\Factories\\": "database/factories/",
+                    "Modules\\Projects\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "monolog/monolog",

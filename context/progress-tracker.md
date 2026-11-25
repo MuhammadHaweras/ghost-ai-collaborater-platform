@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Editor home and project management UI
+- Project persistence
 
 ## Current Goal
 
-- Signed-in users can create, rename, and delete mock projects in the editor. Changes last until the editor page is reloaded or unmounted.
+- Establish project ownership, collaborator memberships, and canvas snapshot references in PostgreSQL. The editor currently uses mock projects that reset on reload.
 
 ## Completed
 
@@ -25,6 +25,7 @@ Update this file whenever the current phase, active feature, or implementation s
 - Added the Feature 04 editor home and Create Project dialog. Both New Project buttons open the same form with a live slug preview.
 - Added owner-only rename and delete actions to the Projects sidebar. Rename starts with the current name and supports Enter. Delete requires confirmation. On mobile, tapping the backdrop dismisses the sidebar.
 - The Create Project and Rename Project name fields use the theme's light primary text for entered and autofilled values.
+- Added the Feature 05 projects module with Eloquent models for project metadata and collaborator emails. The schema enforces project status and per-project email uniqueness, removes memberships on project deletion, and indexes owner and membership lookups.
 
 ## In Progress
 
@@ -36,7 +37,7 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Open Questions
 
-- None for feature 04.
+- None for Feature 05.
 
 ## Architecture Decisions
 
@@ -53,3 +54,4 @@ Update this file whenever the current phase, active feature, or implementation s
 - Chrome verified social buttons on both guest pages, the hand cursor, profile success and error toasts, the resend countdown, and an email change using a code captured from an isolated test mail transport. The two new tables were migrated on local PostgreSQL.
 - Removed the email-change dialog, verification endpoints, and notification. The previously applied database migration remains in the migration history.
 - Feature 04 passed strict TypeScript checking, the production build, standalone Oxlint on the changed frontend files, and the authenticated editor route test (17 assertions). Chrome verified both create entry points, live slug updates, keyboard rename, delete confirmation and cancellation, shared rows without actions, mobile backdrop dismissal, and mock data reset on reload.
+- Feature 05 passed all five schema tests on PostgreSQL and SQLite. An isolated PostgreSQL database verified the indexes and constraints, rollback of both tables, and reapplication of the migration. The full PHPUnit suite passed (29 tests, 269 assertions), and Pint passed.
