@@ -33,7 +33,9 @@
 
 ## Auth and Collaboration Model
 
-- Fortify handles session authentication. Each project has one owner and can have collaborators.
+- Fortify handles password authentication. Socialite signs users into the same web session through Google and GitHub. Each external identity is keyed by provider and provider account ID. The application stores no provider access or refresh tokens.
+- Fortify profile settings save the new email directly and clear the previous email's verification status and reset tokens.
+- Each project has one owner and can have collaborators.
 - Eloquent stores ownership and memberships. Policies control project reads, mutations, and artifact access.
 - Laravel checks project access before issuing short-lived room credentials. Hocuspocus verifies credentials against the requested document.
 - Yjs Awareness carries transient cursor and presence state.

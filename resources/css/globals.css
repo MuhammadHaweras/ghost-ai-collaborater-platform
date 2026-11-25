@@ -79,6 +79,10 @@
         @apply bg-base font-sans text-copy-primary antialiased;
     }
 
+    :where(button, [role='button'], [data-slot='button'], input:is([type='submit'], [type='button'], [type='reset'])):not(:disabled, [aria-disabled='true'], [data-disabled]) {
+        @apply cursor-pointer;
+    }
+
     [data-slot='dialog-overlay'] {
         @apply backdrop-blur-sm;
     }

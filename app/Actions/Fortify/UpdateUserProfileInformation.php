@@ -3,7 +3,9 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -11,51 +13,30 @@ use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
-    /**
-     * Validate and update the given user's profile information.
-     *
-     * @param  array<string, string>  $input
-     *
-     * @throws ValidationException
-     */
+    /** @param array<string, mixed> $input */
     public function update(User $user, array $input): void
     {
-        Validator::make($input, [
+        $data = Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
-
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('users')->ignore($user->id),
-            ],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($user)],
         ])->validateWithBag('updateProfileInformation');
 
-        if ($input['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
-            $this->updateVerifiedUser($user, $input);
-        } else {
-            $user->forceFill([
-                'name' => $input['name'],
-                'email' => $input['email'],
-            ])->save();
+        try {
+            DB::transaction(function () use ($user, $data): void {
+                $member = User::lockForUpdate()->findOrFail($user->id);
+                if ($member->email !== $data['email']) {
+                    $broker = Password::broker(config('fortify.passwords'));
+                    $broker->deleteToken($member);
+                    $member->email = $data['email'];
+                    $broker->deleteToken($member);
+                    $member->email_verified_at = null;
+                }
+
+                $member->fill($data)->save();
+            });
+        } catch (UniqueConstraintViolationException) {
+            throw ValidationException::withMessages(['email' => __('validation.unique', ['attribute' => 'email'])])
+                ->errorBag('updateProfileInformation');
         }
-    }
-
-    /**
-     * Update the given verified user's profile information.
-     *
-     * @param  array<string, string>  $input
-     */
-    protected function updateVerifiedUser(User $user, array $input): void
-    {
-        $user->forceFill([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'email_verified_at' => null,
-        ])->save();
-
-        $user->sendEmailVerificationNotification();
     }
 }
