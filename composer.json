@@ -14,6 +14,7 @@
         "laravel/socialite": "^5.33",
         "laravel/telescope": "^5.29",
         "laravel/tinker": "^3.0",
+        "modules/projects": "*",
         "resend/resend-laravel": "^1.7"
     },
     "require-dev": {
@@ -89,5 +90,14 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "app-modules/*",
+            "options": {
+                "symlink": true
+            }
+        }
+    ]
 }

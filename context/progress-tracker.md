@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Editor home and project management UI
+- Project persistence
 
 ## Current Goal
 
-- Signed-in users can create, rename, and delete mock projects in the editor. Changes last until the editor page is reloaded or unmounted.
+- Establish project ownership, collaborator memberships, and canvas snapshot references in PostgreSQL. The editor currently uses mock projects that reset on reload.
 
 ## Completed
 
@@ -25,6 +25,7 @@ Update this file whenever the current phase, active feature, or implementation s
 - Added the Feature 04 editor home and Create Project dialog. Both New Project buttons open the same form with a live slug preview.
 - Added owner-only rename and delete actions to the Projects sidebar. Rename starts with the current name and supports Enter. Delete requires confirmation. On mobile, tapping the backdrop dismisses the sidebar.
 - The Create Project and Rename Project name fields use the theme's light primary text for entered and autofilled values.
+- Added the Feature 05 projects module with Eloquent models for project metadata and collaborator emails. The schema enforces project status and per-project email uniqueness, removes memberships on project deletion, and indexes owner and membership lookups.
 
 ## In Progress
 
@@ -36,7 +37,7 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Open Questions
 
-- None for feature 04.
+- None for Feature 05.
 
 ## Architecture Decisions
 
