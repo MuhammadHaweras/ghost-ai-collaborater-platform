@@ -32,7 +32,7 @@ The target is a Laravel 13 modular monolith using `internachi/modular`, with a R
 
 ### Authentication and Projects
 
-- Session sign-in and route protection through Laravel Fortify.
+- Session sign-in with a password, Google, or GitHub. Signed-in users can update their profile email and connect providers in profile settings.
 - Project creation, ownership, and collaborator access with Eloquent and Laravel policies.
 - Project list and workspace navigation.
 

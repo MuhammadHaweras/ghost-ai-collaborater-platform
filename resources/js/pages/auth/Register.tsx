@@ -1,6 +1,7 @@
 import { Form, Link } from '@inertiajs/react';
 import { AuthField } from '@/components/auth/auth-field';
 import { AuthLayout } from '@/components/auth/auth-layout';
+import { SocialButtons } from '@/components/auth/social-buttons';
 import { Button } from '@/components/ui/button';
 
 export default function Register() {
@@ -17,6 +18,7 @@ export default function Register() {
                     </>
                 )}
             </Form>
+            <SocialButtons />
             <p className="text-sm text-copy-muted">Already have an account? <Link href="/login" className="text-brand hover:underline">Sign in</Link></p>
         </AuthLayout>
     );

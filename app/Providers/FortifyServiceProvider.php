@@ -33,6 +33,11 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        foreach (['code', 'state'] as $sensitiveField) {
+            config()->push('inertia.devtools.redact.keys', $sensitiveField);
+        }
+        config()->push('telescope.ignore_paths', 'auth/*/callback');
+        config()->push('telescope.ignore_paths', 'auth/*/redirect');
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);

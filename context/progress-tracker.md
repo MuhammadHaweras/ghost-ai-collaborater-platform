@@ -4,7 +4,7 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Workspace authentication (feature 03 complete)
+- Workspace authentication and account settings
 
 ## Current Goal
 
@@ -19,6 +19,9 @@ Update this file whenever the current phase, active feature, or implementation s
 - Connected Inertia sign-in, registration, and password recovery pages to Fortify. Sign-in resumes the intended workspace URL, registration opens the editor, and sign-out returns to login.
 - Protected the editor and profile settings with the web session guard. The editor account menu opens settings and submits sign-out. Settings support name, email, and password changes with separate validation feedback.
 - Auth and profile fields use the theme's light primary text for entered and autofilled values. Each password field starts masked and has an independent show/hide button.
+
+- Added Google and GitHub sign-in and registration through Socialite. Members can connect a matching provider account from profile settings. Linked accounts continue to work after an email change.
+- Added profile success and error toasts and a hand cursor for clickable buttons. Profile settings saves email changes directly.
 
 ## In Progress
 
@@ -43,3 +46,6 @@ Update this file whenever the current phase, active feature, or implementation s
 - A temporary Chrome fixture verified dialog title and description associations, footer actions, token-based styling, and backdrop blur.
 - Feature 03 passed 14 PHPUnit feature tests (166 assertions), Pint, strict TypeScript checking, and the production build. Tests followed the generated reset link, submitted the new password, rejected token reuse, and signed in with the replacement password.
 - Chrome checked sign-in and registration at 390px and 1440px. Using a temporary SQLite database, it registered an account, opened profile settings and signed out by keyboard, checked that password errors appeared on the submitted form, and confirmed the editor redirected to login after sign-out.
+- The account updates passed the full PHPUnit suite (31 tests, 358 assertions), TypeScript, and the production build. Both configured OAuth redirects included state and the expected callback. Socialite fakes exercised provider callbacks and account linking.
+- Chrome verified social buttons on both guest pages, the hand cursor, profile success and error toasts, the resend countdown, and an email change using a code captured from an isolated test mail transport. The two new tables were migrated on local PostgreSQL.
+- Removed the email-change dialog, verification endpoints, and notification. The previously applied database migration remains in the migration history.

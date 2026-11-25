@@ -1,6 +1,7 @@
 import { Form, Link } from '@inertiajs/react';
 import { AuthField } from '@/components/auth/auth-field';
 import { AuthLayout } from '@/components/auth/auth-layout';
+import { SocialButtons } from '@/components/auth/social-buttons';
 import { Button } from '@/components/ui/button';
 
 export default function Login({ status }: { status: string | null }) {
@@ -17,6 +18,7 @@ export default function Login({ status }: { status: string | null }) {
                     </>
                 )}
             </Form>
+            <SocialButtons />
             <p className="text-sm text-copy-muted">New to Ghost AI? <Link href="/register" className="text-brand hover:underline">Create an account</Link></p>
         </AuthLayout>
     );

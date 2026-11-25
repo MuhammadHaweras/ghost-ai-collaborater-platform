@@ -11,7 +11,7 @@
         "internachi/modular": "^3.0",
         "laravel/fortify": "^1.43",
         "laravel/framework": "^13.17",
-        "laravel/socialite": "*",
+        "laravel/socialite": "^5.33",
         "laravel/telescope": "^5.29",
         "laravel/tinker": "^3.0",
         "resend/resend-laravel": "^1.7"

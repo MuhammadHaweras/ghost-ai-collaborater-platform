@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Password;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
@@ -19,18 +21,27 @@ class ProfileSettingsTest extends TestCase
         $this->put('/user/password')->assertRedirectToRoute('login');
     }
 
-    public function test_members_can_edit_their_profile(): void
+    public function test_members_can_update_their_profile_email_without_sending_a_notification(): void
     {
+        Notification::fake();
         $this->withoutVite();
         $user = User::factory()->create();
+        $oldResetToken = Password::broker()->createToken($user);
         $this->actingAs($user)->get('/profile')->assertOk()
             ->assertInertia(fn (AssertableInertia $page) => $page->component('Profile')->where('auth.user.email', $user->email));
 
         $this->from('/profile')->put('/user/profile-information', [
             'name' => 'Updated Name',
-            'email' => 'updated@example.test',
+            'email' => 'UPDATED@example.test',
         ])->assertRedirect('/profile')->assertSessionHasNoErrors();
-        $this->assertDatabaseHas('users', ['id' => $user->id, 'name' => 'Updated Name', 'email' => 'updated@example.test']);
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'name' => 'Updated Name',
+            'email' => 'updated@example.test',
+            'email_verified_at' => null,
+        ]);
+        $this->assertFalse(Password::broker()->tokenExists($user, $oldResetToken));
+        Notification::assertNothingSent();
     }
 
     public function test_duplicate_email_is_reported_on_the_profile_form(): void
